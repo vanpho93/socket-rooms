@@ -5,21 +5,41 @@
     <title>Chat room</title>
     <script src="jquery-3.1.1.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
+    <style media="screen">
+      .active{
+        background-color: yellow;
+        color: red;
+      }
+    </style>
     <script type="text/javascript">
+      var activeRoom;
       var socket = io();
       $(document).ready(function(){
+        $('#btn-send').click(function(){
+            socket.emit('CLIENT_SEND_MESSAGE_TO_ROOM',
+            {roomName: activeRoom, msg: $('#txt-msg').val()});
+        });
+
         $('#btn-tao-room').click(function(){
             socket.emit('CLIENT_CREATE_NEW_ROOM',
             $('#txt-room').val());
         });
 
+
+        $(document).on("click",'.item-room',function(){
+          $('#list-room li').removeClass('active');
+          $(this).addClass('active');
+          activeRoom = $(this).html();
+          socket.emit('CLIENT_JOIN_ROOM', activeRoom);
+        });
+
         socket.on('NEW_ROOM_ACCEPTED', function(roomName){
-          $('#list-room').append(`<li>${roomName}</li>`);
+          $('#list-room').append(`<li class="item-room active">${roomName}</li>`);
         });
 
         socket.on('SERVER_SEND_ROOM_ARRAY', function(arrRoom){
           arrRoom.forEach(function(e){
-            $('#list-room').append(`<li>${e}</li>`);
+            $('#list-room').append(`<li class="item-room">${e}</li>`);
           });
         });
 
@@ -36,6 +56,11 @@
       <input type="text" id="txt-room" placeholder="Nhap ten room">
       <br><br>
       <button id="btn-tao-room">Tao room</button>
+    </div>
+    <div id="div-chat">
+      <input type="text" id="txt-msg">
+      <br><br>
+      <button id="btn-send">Gui</button>
     </div>
     <ul id="list-room"></ul>
   </body>

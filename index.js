@@ -31,4 +31,12 @@ io.on('connection', function(socket){
       socket.emit('SERVER_COMFIRM_ROOM_NAME', false);
     }
   });
+
+  socket.on('CLIENT_JOIN_ROOM', function(roomName){
+    socket.join(roomName);
+  });
+
+  socket.on('CLIENT_SEND_MESSAGE_TO_ROOM', function(data){
+    console.log(data);
+  });
 })
