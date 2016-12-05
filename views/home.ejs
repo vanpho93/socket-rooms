@@ -12,6 +12,17 @@
             socket.emit('CLIENT_CREATE_NEW_ROOM',
             $('#txt-room').val());
         });
+
+        socket.on('NEW_ROOM_ACCEPTED', function(roomName){
+          $('#list-room').append(`<li>${roomName}</li>`);
+        });
+
+        socket.on('SERVER_SEND_ROOM_ARRAY', function(arrRoom){
+          arrRoom.forEach(function(e){
+            $('#list-room').append(`<li>${e}</li>`);
+          });
+        });
+
         socket.on('SERVER_COMFIRM_ROOM_NAME', function(data){
           if(!data){
             alert('Ten room da ton tai');
@@ -26,5 +37,6 @@
       <br><br>
       <button id="btn-tao-room">Tao room</button>
     </div>
+    <ul id="list-room"></ul>
   </body>
 </html>

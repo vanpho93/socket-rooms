@@ -19,9 +19,13 @@ var mangRoom = [];
 
 io.on('connection', function(socket){
   console.log('Co nguoi ket noi');
+
+  socket.emit('SERVER_SEND_ROOM_ARRAY', mangRoom);
+
   socket.on('CLIENT_CREATE_NEW_ROOM', function(data){
     if(mangRoom.indexOf(data) == -1){
       socket.emit('SERVER_COMFIRM_ROOM_NAME', true);
+      io.emit('NEW_ROOM_ACCEPTED', data);
       mangRoom.unshift(data);
     }else{
       socket.emit('SERVER_COMFIRM_ROOM_NAME', false);
