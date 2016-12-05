@@ -33,8 +33,12 @@
           socket.emit('CLIENT_JOIN_ROOM', activeRoom);
         });
 
+        socket.on('ROOM_MESSAGE', function(data){
+          alert(data)
+        });
+
         socket.on('NEW_ROOM_ACCEPTED', function(roomName){
-          $('#list-room').append(`<li class="item-room active">${roomName}</li>`);
+          $('#list-room').append(`<li class="item-room">${roomName}</li>`);
         });
 
         socket.on('SERVER_SEND_ROOM_ARRAY', function(arrRoom){
@@ -46,6 +50,8 @@
         socket.on('SERVER_COMFIRM_ROOM_NAME', function(data){
           if(!data){
             alert('Ten room da ton tai');
+          }else{
+            $('#list-room').append(`<li class="item-room active">${data}</li>`);
           }
         });
       });

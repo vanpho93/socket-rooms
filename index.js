@@ -24,8 +24,9 @@ io.on('connection', function(socket){
 
   socket.on('CLIENT_CREATE_NEW_ROOM', function(data){
     if(mangRoom.indexOf(data) == -1){
-      socket.emit('SERVER_COMFIRM_ROOM_NAME', true);
-      io.emit('NEW_ROOM_ACCEPTED', data);
+      socket.join(data);
+      socket.emit('SERVER_COMFIRM_ROOM_NAME', data);
+      socket.broadcast.emit('NEW_ROOM_ACCEPTED', data);
       mangRoom.unshift(data);
     }else{
       socket.emit('SERVER_COMFIRM_ROOM_NAME', false);
@@ -37,6 +38,6 @@ io.on('connection', function(socket){
   });
 
   socket.on('CLIENT_SEND_MESSAGE_TO_ROOM', function(data){
-    console.log(data);
+    socket.broadcast.to(data.roomName).emit('ROOM_MESSAGE', data.msg);
   });
 })
