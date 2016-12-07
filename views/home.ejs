@@ -44,6 +44,7 @@
 
         $('#txt-msg').blur(function(){
           //Gui tin -> ket thuc soan thao
+          socket.emit('SOMEONE_STOP_EDIT', '');
           isFirst = true;
         });
 

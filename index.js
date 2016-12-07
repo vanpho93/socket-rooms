@@ -16,6 +16,7 @@ app.get('/', function(req, res){
 });
 
 var mangRoom = [];
+var mangEdit = [];
 
 io.on('connection', function(socket){
   console.log('Co nguoi ket noi');
@@ -52,10 +53,17 @@ io.on('connection', function(socket){
   });
 
   socket.on('SOMEONE_EDIT_MSG', function(){
+    mangEdit.push(socket.id);
+    console.log(mangEdit.length);
     socket.broadcast.emit('USER_EDIT', '');
   });
 
   socket.on('SOMEONE_STOP_EDIT', function(){
-    io.emit('STOP_EDIT', '');
+    var index = mangEdit.indexOf(socket.id);
+    console.log('socket: '+ index);
+    mangEdit.splice(index, 1);
+    if(mangEdit.length == 0){
+      io.emit('STOP_EDIT', '');
+    }
   });
 })
