@@ -25,6 +25,25 @@
             $('#txt-room').val());
         });
 
+        var isFirst = true;
+
+        $('#txt-msg').keypress(function(e){
+          if(isFirst){
+            //gui tin -> dang nhap van ban
+            console.log('Gui tin');
+            isFirst = false;
+          }
+          if(e.which == 13){
+            isFirst = true;
+            $(this).val('');
+            //Gui tin -> ket thuc soan thao
+          }
+        });
+
+        $('#txt-msg').blur(function(){
+          //Gui tin -> ket thuc soan thao
+          isFirst = true;
+        });
 
         $(document).on("click",'.item-room',function(){
           $('#list-room li').removeClass('active');
@@ -64,7 +83,8 @@
       <button id="btn-tao-room">Tao room</button>
     </div>
     <div id="div-chat">
-      <input type="text" id="txt-msg">
+      <br><br>
+      <input type="text" id="txt-msg" placeholder="Nhap tin nhan">
       <br><br>
       <button id="btn-send">Gui</button>
     </div>
