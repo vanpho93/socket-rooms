@@ -50,4 +50,12 @@ io.on('connection', function(socket){
   socket.on('CLIENT_SEND_MESSAGE_TO_ROOM', function(data){
     socket.broadcast.to(data.roomName).emit('ROOM_MESSAGE', data.msg);
   });
+
+  socket.on('SOMEONE_EDIT_MSG', function(){
+    socket.broadcast.emit('USER_EDIT', '');
+  });
+
+  socket.on('SOMEONE_STOP_EDIT', function(){
+    io.emit('STOP_EDIT', '');
+  });
 })

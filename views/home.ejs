@@ -30,6 +30,7 @@
         $('#txt-msg').keypress(function(e){
           if(isFirst){
             //gui tin -> dang nhap van ban
+            socket.emit('SOMEONE_EDIT_MSG', '');
             console.log('Gui tin');
             isFirst = false;
           }
@@ -37,12 +38,21 @@
             isFirst = true;
             $(this).val('');
             //Gui tin -> ket thuc soan thao
+            socket.emit('SOMEONE_STOP_EDIT', '');
           }
         });
 
         $('#txt-msg').blur(function(){
           //Gui tin -> ket thuc soan thao
           isFirst = true;
+        });
+
+        socket.on('USER_EDIT', function(){
+          $('#enter-state').html('Ai do dang nhap van ban');
+        });
+
+        socket.on('STOP_EDIT', function(){
+          $('#enter-state').html('');
         });
 
         $(document).on("click",'.item-room',function(){
@@ -89,5 +99,6 @@
       <button id="btn-send">Gui</button>
     </div>
     <ul id="list-room"></ul>
+    <p id="enter-state"></p>
   </body>
 </html>
